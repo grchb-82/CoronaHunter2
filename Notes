@@ -1,0 +1,36 @@
+ToDo
+
+Power up
+0.55                                - Shield
+                                    - activate shield with button
+                                    - Change ammotype system
+                                        damage different
+- possible mixing of vaccines
+    red plus damageas
+    blue - plus frequency
+    green - plus max injections
+- mask
+    reduction of virus speed for x seconds
+
+0.56                                Fade out for power up
+0.55                                self.visible bei pup hinzu
+0.55                                pup_timer = 0
+0.55                                pup_timer_interval = 10
+0.55                                pup_timer_blink = 3
+
+Virus
+                                    - animation for death virus
+
+Boss
+0.54                                - bug with player hit by boss
+0.55                               - increased life for intermediate bosses
+0.54                                lifepoints implemented as gs variable
+0.55                                programmed increasing of boss hp
+                                    - bug after collision -> respawn don't stop in boss level
+
+General
+0.55                                - implement version tag
+0.55                                - neue datei für highscore wenn nicht vorhanden
+0.55                                -highscore hexadezimal
+                                    - Controller support
+How to play - screen hinzu

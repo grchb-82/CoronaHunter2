@@ -1,0 +1,82 @@
+v0.66
+- added base rumble effects on xbox controller
+
+v0.65
+- shield updated
+
+v0.64
+- new player design implemented
+
+v0.63
+- added pause menu (Resolution not implemented)
+
+v0.62
+- reduced start sound volume
+
+v0.61
+- changed virus 2 behavior - similar to previous
+
+v0.60
+- added joystick hotplug and hot-removed support during game session
+
+v0.59
+- added virus death animation
+- added iron virus explosion
+- added intermediate boss background music
+- added intermediate boss explosion
+- changes to sound volume of shot sound
+- added boss explosion sound
+- hit sound only when virus killed, not every hit
+- added "real" hit sound for every hit
+- added pause sound
+- added shield sound
+- added unpause sound
+- added shield hit sound
+
+v0.58
+- added joystick support
+
+v0.57
+- added pause mode ESC
+- changed timing to actual elapsed game time
+- remaining shield shown in top bar
+
+
+v0.56
+- #shield blink before disappear
+- pup disappear with blinks before disappear
+- enemy retracts after shield collision
+- no collision check for player when shield active
+- no pups during break
+- no shield use during break
+- changed game over tag
+- reduced pup frequency
+
+v0.55
+- added shield (time and life based)
+- boss hp increasing
+
+v0.54
+- added version tag
+- added game studio tag
+
+v0.53
+- Boss can cause damage
+- Collision from player with boss will damage boss
+
+v0.52
+- boss movement towards player
+- changed points, highscore and life routine
+- added clamp for MAXLIFE
+- Power-Ups completely stackable
+- revised point model
+- add life *1.33 per boss level
+
+v0.51
+- changed internal timing to pixel per second (clock.tick(FPS) / 1000)
+
+v0.5
+- added intermediate enemy all 5 levels
+
+v0.4
+- Reworked stacking of ammotype

@@ -1,0 +1,13 @@
+{
+    "fullscreen": true,
+    "resolution": [
+        256,
+        224
+    ],
+    "flags": [
+        "HWSURFACE",
+        "DOUBLEBUF",
+        "RESIZABLE",
+        "SCALED"
+    ]
+}
