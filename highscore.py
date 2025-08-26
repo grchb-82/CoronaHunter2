@@ -1,6 +1,7 @@
 import os
+from asset_loader import AssetLoader
 
-HS_FILE = "highscore"  # oder Pfad/Name deiner Wahl
+HS_FILE = "key"  # oder Pfad/Name deiner Wahl
 
 def load_high_score():
     """

@@ -1,10 +1,11 @@
 import pygame
+from asset_loader import AssetLoader
 from settings import *
 
 class Title(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load("assets/sprites/title.png")
+        self.image = AssetLoader.load_image("assets/sprites/title.png")
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH // 2, HEIGHT //2)
 
@@ -14,7 +15,7 @@ class Title(pygame.sprite.Sprite):
 class Version(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load("assets/sprites/version.png")
+        self.image = AssetLoader.load_image("assets/sprites/version.png")
         self.rect = self.image.get_rect()
         self.rect.bottomleft = (7, HEIGHT -3)
 
@@ -27,7 +28,7 @@ class Version(pygame.sprite.Sprite):
 class Back1(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load("assets/sprites/back1.png").convert_alpha()
+        self.image = AssetLoader.load_image("assets/sprites/back1.png").convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH // 2, HEIGHT // 2)
 
@@ -37,7 +38,7 @@ class Back1(pygame.sprite.Sprite):
 class Game_Over(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load("assets/sprites/game_over.png").convert_alpha()
+        self.image = AssetLoader.load_image("assets/sprites/game_over.png").convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH // 2, HEIGHT // 2)
 

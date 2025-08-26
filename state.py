@@ -6,6 +6,7 @@ class GameState:
         self.points = 0
         self.life_no = 3
         self.game_over = False
+        self.running = True
         self.respawn = False
         self.wave_time = 35    #default 35
         self.breaktime = 4
@@ -17,6 +18,7 @@ class GameState:
         self.level_break = False
         self.level_active = True
         self.pause_active = False
+        self.start_active = True
         self.last_pause_push = 0
         self.level = 1     #default 1
         self.all_death = False
@@ -64,7 +66,7 @@ class GameState:
         self.vacc_speed = 300
         self.vacc_speed_default = 300
     # SHIELD ############################################## ##
-        self.energy_level = 20
+        self.energy_level = 200
         #self.shield_life_default = 20
         self.additional_energy = 20
         self.shield_blink = False

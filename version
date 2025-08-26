@@ -1,5 +1,15 @@
+v0.67
+- bug fix for pass by virus infection
+- bug fix for internal module handling
+- clamp for virus on screen
+- changed respawn logic
+- added restart function
+- bugfix shield activation
+
 v0.66
 - added base rumble effects on xbox controller
+- bug fix in shield power-up
+- optimized internal file handling
 
 v0.65
 - shield updated

@@ -1,4 +1,5 @@
 import pygame
+from asset_loader import AssetLoader
 #from settings import *
 
 class Explosion(pygame.sprite.Sprite):
@@ -6,7 +7,7 @@ class Explosion(pygame.sprite.Sprite):
         super().__init__()
         self.images = []
         for num in range(1,6):
-            img = pygame.image.load(f"assets/sprites/explosion{num}.png").convert_alpha()
+            img = AssetLoader.load_image(f"assets/sprites/explosion{num}.png").convert_alpha()
             self.images.append(img)
         self.index = 0
         self.image = self.images[self.index]

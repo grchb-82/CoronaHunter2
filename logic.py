@@ -16,6 +16,7 @@ def points_highscore_life(gs, oneup_sound, hs_sound, player):
     if player.life_no < gs.MAX_LIFE and gs.points >= gs.life_milestone:
         player.life_no += 1
         gs.life_milestone += gs.life_milestone_intervall
+        gs.life_milestone_intervall *= 1.5
         oneup_sound.play()
     if player.life_no > gs.MAX_LIFE:
         player.life_no = gs.MAX_LIFE
@@ -66,8 +67,8 @@ def hearts_display(hearts_all,player,game_state):
         hearts_all.add(Hearts0(5, 1))
         game_state.game_over = True
 def update_game(viruses1, viruses2, vaccines, game_state, hearts_all,dt_game,pups,explosions,virus1_animations, bosses,gs,player,shields,game_time,sparks):
-    viruses1.update(game_state,dt_game)
-    viruses2.update(game_state,dt_game)
+    viruses1.update(game_state,dt_game,player)
+    viruses2.update(game_state,dt_game,player)
     vaccines.update(dt_game)
     pups.update(dt_game,game_state,game_time)
     explosions.update()
@@ -203,15 +204,38 @@ def handle_collisions(
             for virus in hits3:
                 virus.collide_shield(shield)
 
-        for vaccine in list(vaccines):
-            hits = pygame.sprite.spritecollide(vaccine, viruses2, False, pygame.sprite.collide_mask)
-            if not hits:
+    for vaccine in list(vaccines):
+        hits = pygame.sprite.spritecollide(vaccine, viruses2, False, pygame.sprite.collide_mask)
+        if not hits:
+            continue
+        vaccine.kill()
+        swoosh.play()
+        for virus in hits:
+            if hits:
+                virus.v_life -= gs.damage
+
+                if virus.v_life <= 0:
+                    virus.kill()
+                    hit_sound.play()
+
+                    game_state.points += int(virus.basepoints * ((gs.virus_speed) * 0.1))
+                    points_highscore_life(gs, oneup_sound, hs_sound, player)
+                    explosion_pos_x = virus.rect.x + 16
+                    explosion_pos_y = virus.rect.y + 16
+                    explosion = Explosion(explosion_pos_x, explosion_pos_y)
+                    explosions.add(explosion)
+
+    if not game_state.respawn:
+        for shield in list(shields):
+            hits3 = pygame.sprite.spritecollide(shield, viruses2, False, pygame.sprite.collide_mask)
+            if not hits3:
                 continue
-            vaccine.kill()
-            swoosh.play()
-            for virus in hits:
-                if hits:
-                    virus.v_life -= gs.damage
+            gs.energy_level -= 1
+            shield_hit_sound.play()
+
+            for virus in hits3:
+                if hits3:
+                    virus.v_life -= 5
 
                     if virus.v_life <= 0:
                         virus.kill()
@@ -224,47 +248,24 @@ def handle_collisions(
                         explosion = Explosion(explosion_pos_x, explosion_pos_y)
                         explosions.add(explosion)
 
-        if not game_state.respawn:
-            for shield in list(shields):
-                hits3 = pygame.sprite.spritecollide(shield, viruses2, False, pygame.sprite.collide_mask)
-                if not hits3:
-                    continue
-                gs.energy_level -= 1
-                shield_hit_sound.play()
+            for virus in hits3:
+                virus.collide_shield(shield)
 
-                for virus in hits3:
-                    if hits3:
-                        virus.v_life -= 5
+    if not game_state.respawn:
+        for shield in list(shields):
+            hits4 = pygame.sprite.spritecollide(shield, bosses, False, pygame.sprite.collide_mask)
+            if not hits4:
+                continue
+            gs.energy_level -= 1
+            shield_hit_sound.play()
+            for boss in hits4:
+                if hits4:
+                    boss.v_life -= 5
+                    boss_kill(boss, boss_explosion, boss_level_backmuc, explosions, game_state, gs, oneup_sound,
+                              hs_sound, player)
 
-                        if virus.v_life <= 0:
-                            virus.kill()
-                            hit_sound.play()
-
-                            game_state.points += int(virus.basepoints * ((gs.virus_speed) * 0.1))
-                            points_highscore_life(gs, oneup_sound, hs_sound, player)
-                            explosion_pos_x = virus.rect.x + 16
-                            explosion_pos_y = virus.rect.y + 16
-                            explosion = Explosion(explosion_pos_x, explosion_pos_y)
-                            explosions.add(explosion)
-
-                for virus in hits3:
-                    virus.collide_shield(shield)
-
-        if not game_state.respawn:
-            for shield in list(shields):
-                hits4 = pygame.sprite.spritecollide(shield, bosses, False, pygame.sprite.collide_mask)
-                if not hits4:
-                    continue
-                gs.energy_level -= 1
-                shield_hit_sound.play()
-                for boss in hits4:
-                    if hits4:
-                        boss.v_life -= 5
-                        boss_kill(boss, boss_explosion, boss_level_backmuc, explosions, game_state, gs, oneup_sound,
-                                  hs_sound, player)
-
-                for boss in hits4:
-                    boss.collide_shield(shield)
+            for boss in hits4:
+                boss.collide_shield(shield)
 
     for vaccine in list(vaccines):
         hits2 = pygame.sprite.spritecollide(vaccine, bosses, False, pygame.sprite.collide_mask)
@@ -300,7 +301,7 @@ def handle_collisions(
             game_state.vacc_speed = gs.vacc_speed_default
             game_state.dual_shot = False
             game_state.speed_restore = game_state.virus_speed
-        elif pygame.sprite.spritecollide(player, viruses2, True, pygame.sprite.collide_mask):
+        if pygame.sprite.spritecollide(player, viruses2, True, pygame.sprite.collide_mask):
             hit2_sound.play()
             for idx, joy in enumerate(gs.joysticks):
                 # z. B. für Controller 0 einen kurzen Rumble:
@@ -384,7 +385,6 @@ def handle_collisions(
                 #print(gs.shot_frequency)
                 #print(gs.max_shots)
             game_state.ammo_type = 3
-
 
         elif pup.pup_type == 4:
             if gs.ammo_type == 4:

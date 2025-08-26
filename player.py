@@ -1,12 +1,13 @@
 import pygame
+from asset_loader import AssetLoader
 from settings import *        # Kinematik
 
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image       = pygame.image.load(resource_path("assets/sprites/new_player.png")).convert_alpha()
-        self.image       = pygame.image.load("assets/sprites/new_player.png").convert_alpha()
+
+        self.image       = AssetLoader.load_image("assets/sprites/new_player.png").convert_alpha()
         self.rect        = self.image.get_rect(center=(0, HEIGHT//2))
         #self.rect        = self.image.get_rect(center=(0, HEIGHT // 2))
         self.visible     = True
@@ -113,7 +114,7 @@ class Shield(pygame.sprite.Sprite):
         self.player = player
 
         # Bild & Rect mittig auf den Spieler setzen
-        self.image = pygame.image.load("assets/sprites/shield.png").convert_alpha()
+        self.image = AssetLoader.load_image("assets/sprites/shield.png").convert_alpha()
         self.rect = self.image.get_rect(center=self.player.rect.center)
 
     #    # Lebensdauer des Schildes

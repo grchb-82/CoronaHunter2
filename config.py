@@ -3,7 +3,7 @@ from pathlib import Path
 from copy import deepcopy
 import pygame
 
-CONFIG_PATH = Path("config.json")
+CONFIG_PATH =Path("config.json")
 DEFAULT_CONFIG = {
     "fullscreen": False,
     "resolution": [256, 224],

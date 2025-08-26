@@ -1,11 +1,12 @@
 import pygame
 import random
 from settings import *
+from asset_loader import AssetLoader
 
 class pup_ammo(pygame.sprite.Sprite):
     def __init__(self, x, y,speed, game_state):
         super().__init__()
-        self.image = pygame.image.load(f"assets/sprites/pup_ammo{game_state.pup_type}.png").convert_alpha()
+        self.image = AssetLoader.load_image(f"assets/sprites/pup_ammo{game_state.pup_type}.png").convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
         self.life = game_state.pup_life

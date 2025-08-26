@@ -1,7 +1,8 @@
+import player
+from asset_loader import AssetLoader
 import pygame
 import random
 from pygame.math import Vector2
-
 
 from settings import *
 
@@ -10,9 +11,10 @@ class Virus(pygame.sprite.Sprite):
     MODE_NORMAL = "normal"
     MODE_REPEL  = "repel"
 
+    player.score = 0
     def __init__(self, x, y, speed):
         super().__init__()
-        self.image = pygame.image.load("assets/sprites/virus.png").convert_alpha()
+        self.image = AssetLoader.load_image("assets/sprites/virus.png").convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
         self.mask = pygame.mask.from_surface(self.image)
@@ -42,23 +44,21 @@ class Virus(pygame.sprite.Sprite):
         self.repel_duration = 1.0  # Sekunden
 
     def collide_shield(self, shield):
-        if self.mode == self.MODE_NORMAL:
-            self.prev_vel     = self.vel.copy()
-            self.mode         = self.MODE_REPEL
-            self.repel_target = shield
-            # Shield kann ggf. eine eigene speed haben; sonst nimm Viren-Speed
-            self.repel_speed = shield.speed * 1.1
-            self.repel_timer  = 0.0
+        #print("collide_shield virus1", shield)
+        #if self.mode == self.MODE_NORMAL:
+        self.prev_vel     = self.vel.copy()
+        self.mode         = self.MODE_REPEL
+        self.repel_target = shield
+        # Shield kann ggf. eine eigene speed haben; sonst nimm Viren-Speed
+        self.repel_speed = shield.speed * 1.1
+        self.repel_timer  = 0.0
 
-        if self.rect.top <= 20 or self.rect.bottom >= HEIGHT:
-            self.vel.y *= -1
-
-
+        #if self.rect.top <= 20 or self.rect.bottom >= HEIGHT:
+        #    self.vel.y *= -1
 
     #def update(self,game_state,dt):
-    def update(self, game_state, dt_game):
+    def update(self, game_state, dt_game,player):
         """Bewegt das Virus je nach Mode."""
-
 
         if self.mode == self.MODE_NORMAL:
             # Normale Bewegung
@@ -86,17 +86,21 @@ class Virus(pygame.sprite.Sprite):
         # Alte Logik beibehalten:
         if self.rect.right < 0:
             self.kill()
-            game_state.life_no -= 0.1
+            player.life_no -= 0.1
 
-        if self.rect.top <= 20 or self.rect.bottom >= HEIGHT:
+        if self.rect.top < 20 :
             self.vel.y *= -1
+            self.rect.top = 20
+        elif self.rect.bottom > HEIGHT:
+            self.vel.y *= -1
+            self.rect.bottom = HEIGHT
 
 class Virus1_Animation(pygame.sprite.Sprite):
     def __init__(self,x,y,):
         super().__init__()
         self.images = []
         for num in range(1,7):
-            img = pygame.image.load(f"assets/sprites/virus1_ani_{num}.png").convert_alpha()
+            img = AssetLoader.load_image(f"assets/sprites/virus1_ani_{num}.png").convert_alpha()
             self.images.append(img)
         self.index = 0
         self.image = self.images[self.index]
@@ -126,7 +130,7 @@ class Virus2(pygame.sprite.Sprite):
 
     def __init__(self, x, y, speed):
         super().__init__()
-        self.image = pygame.image.load("assets/sprites/virus2.png").convert_alpha()
+        self.image = AssetLoader.load_image("assets/sprites/virus2.png").convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
         #self.speed = speed
@@ -160,7 +164,7 @@ class Virus2(pygame.sprite.Sprite):
         self.repel_timer = 0.0
         self.repel_duration = 1.0  # Sekunden
 
-    def update(self,game_state,dt_game):
+    def update(self,game_state,dt_game,player):
         """Bewegt das Virus je nach Mode."""
         if self.mode == self.MODE_NORMAL:
             # Normale Bewegung
@@ -185,27 +189,30 @@ class Virus2(pygame.sprite.Sprite):
         # Rect an neue Position anpassen
         self.rect.topleft = (int(self.pos.x), int(self.pos.y))
 
-        # Alte Logik beibehalten:
         if self.rect.right < 0:
             self.kill()
-            game_state.life_no -= 0.1
+            player.life_no -= 0.2
 
-        if self.rect.top <= 20 or self.rect.bottom >= HEIGHT:
+        if self.rect.top < 20:
             self.vel.y *= -1
+            self.rect.top = 20
+        elif self.rect.bottom > HEIGHT:
+            self.vel.y *= -1
+            self.rect.bottom = HEIGHT
 
     def collide_shield(self, shield):
+        #print("collide_shield virus2", shield)
         """Im Collision-Handler aufrufen, wenn Virus das Shield trifft."""
-        if self.mode == self.MODE_NORMAL:
-            self.prev_vel     = self.vel.copy()
-            self.mode         = self.MODE_REPEL
-            self.repel_target = shield
-            # Shield kann ggf. eine eigene speed haben; sonst nimm Viren-Speed
-            self.repel_speed = shield.speed * 1.1
-            self.repel_timer  = 0.0
+        #if self.mode == self.MODE_NORMAL:
+        self.prev_vel     = self.vel.copy()
+        self.mode         = self.MODE_REPEL
+        self.repel_target = shield
+        # Shield kann ggf. eine eigene speed haben; sonst nimm Viren-Speed
+        self.repel_speed = shield.speed * 1.1
+        self.repel_timer  = 0.0
 
-        if self.rect.top <= 20 or self.rect.bottom >= HEIGHT:
-            self.vel.y *= -1
-
+        #if self.rect.top <= 20 or self.rect.bottom >= HEIGHT:
+        #    self.vel.y *= -1
 
 class  Boss_Virus_10(pygame.sprite.Sprite):
 
@@ -214,7 +221,7 @@ class  Boss_Virus_10(pygame.sprite.Sprite):
 
     def __init__(self, x, y, speed,gs):
         super().__init__()
-        self.image = pygame.image.load("assets/sprites/level_10_boss.png").convert_alpha()
+        self.image = AssetLoader.load_image("assets/sprites/level_10_boss.png").convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
         self.boss_pos = pygame.math.Vector2(self.rect.center)
@@ -238,7 +245,6 @@ class  Boss_Virus_10(pygame.sprite.Sprite):
         self.repel_timer = 0.0
         self.repel_duration = 1.0  # Sekunden
 
-
     def move_to(self, gs, max_dist,dt_game,player):
         self._retarget_timer += dt_game
         if self._retarget_timer >= self._retarget_interval:
@@ -255,9 +261,12 @@ class  Boss_Virus_10(pygame.sprite.Sprite):
         else:
             self.pos += direction.normalize() * max_dist
 
-
-        if self.rect.top <= 20 or self.rect.bottom >= HEIGHT:
+        if self.rect.top < 20:
             self.vel.y *= -1
+            self.rect.top = 20
+        if self.rect.bottom > HEIGHT:
+            self.vel.y *= -1
+            self.rect.bottom = HEIGHT+1
 
     def collide_shield(self, shield):
         if self.mode == self.MODE_NORMAL:
@@ -268,5 +277,9 @@ class  Boss_Virus_10(pygame.sprite.Sprite):
             self.repel_speed = shield.speed * 1.1
             self.repel_timer  = 0.0
 
-        if self.rect.top <= 20 or self.rect.bottom >= HEIGHT:
+        if self.rect.top < 20:
             self.vel.y *= -1
+            self.rect.top = 20
+        if self.rect.bottom > HEIGHT:
+            self.vel.y *= -1
+            self.rect.bottom = HEIGHT+1

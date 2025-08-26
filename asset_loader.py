@@ -17,3 +17,9 @@ class AssetLoader:
         path = cls.resource_path(relative_path)
         image = pygame.image.load(path)
         return image.convert_alpha() if convert_alpha else image.convert()
+
+    @classmethod
+    def load_sound(cls, relative_path: str):
+        """Sound laden"""
+        path = cls.resource_path(relative_path)
+        return pygame.mixer.Sound(path)

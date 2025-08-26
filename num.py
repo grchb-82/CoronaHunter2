@@ -1,9 +1,10 @@
+from asset_loader import AssetLoader
 import pygame
 
 class Number(pygame.sprite.Sprite):
     def __init__(self, digit, x, y):
         super().__init__()
-        self.image = pygame.image.load(f"assets/sprites/num{digit}.png").convert_alpha()
+        self.image = AssetLoader.load_image(f"assets/sprites/num{digit}.png").convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
 
@@ -19,7 +20,7 @@ def load_digits(sheet_path=default_sheet_path):
     Lädt das Ziffern-Spritesheet und gibt ein Dict zurück,
     das jede Ziffer ("0" bis "9") auf ein pygame.Surface mappt.
     """
-    sheet = pygame.image.load(sheet_path).convert_alpha()
+    sheet = AssetLoader.load_image(sheet_path).convert_alpha()
     height = sheet.get_height()
     digits = {}
     for i in range(10):
